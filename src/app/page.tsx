@@ -1,5 +1,6 @@
 import homepageImage from "@/assets/homepage.svg";
 import Image from "next/image";
+import Link from "next/link";
 
 const page = () => {
   const isLoggedIn = false;
@@ -37,9 +38,13 @@ const page = () => {
           </ul>
         </div>
         {!isLoggedIn && (
-          <button className="bg-primaryColor text-white font-semibold px-5 py-2 rounded-md shadow-sm">
-            Login
-          </button>
+          <div>
+            <Link href={"/login"}>
+              <button className="bg-primaryColor text-white font-semibold px-5 py-2 rounded-md shadow-sm">
+                Login
+              </button>{" "}
+            </Link>
+          </div>
         )}
       </section>
     </main>
