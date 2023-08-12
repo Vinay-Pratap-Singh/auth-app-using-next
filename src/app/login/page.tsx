@@ -10,7 +10,7 @@ type IformData = {
   password: string;
 };
 
-const page = () => {
+const Login = () => {
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -86,15 +86,6 @@ const page = () => {
                 value: true,
                 message: "Please choose a password",
               },
-              minLength: {
-                value: 8,
-                message: "Password should contain atleast 8 character",
-              },
-
-              pattern: {
-                value: /^(\+91[-\s]?)?[0]?(91)?[789]\d{9}$/,
-                message: "Please choose a strong password",
-              },
             })}
           />
           {errors.password && (
@@ -122,4 +113,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Login;

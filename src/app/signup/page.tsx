@@ -12,7 +12,7 @@ type IformData = {
   password: string;
 };
 
-const page = () => {
+const Signup = () => {
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -117,14 +117,6 @@ const page = () => {
                 value: true,
                 message: "Please enter your phone number",
               },
-              minLength: {
-                value: 10,
-                message: "Number should contain 10 digits",
-              },
-              maxLength: {
-                value: 10,
-                message: "Number should contain 10 digits",
-              },
               pattern: {
                 value: /^(\+91[-\s]?)?[0]?(91)?[789]\d{9}$/,
                 message: "Please enter a valid phone number",
@@ -193,4 +185,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Signup;
