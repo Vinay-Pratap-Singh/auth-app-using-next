@@ -3,8 +3,9 @@
 import Image from "next/image";
 import signupImage from "@/assets/signup.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Link from "next/link";
 
-type IinputData = {
+type IformData = {
   fullName: string;
   email: string;
   phoneNumber: number;
@@ -19,10 +20,10 @@ const page = () => {
     reset,
     setValue,
     watch,
-  } = useForm<IinputData>();
+  } = useForm<IformData>();
 
   // function handle the form submit
-  const handleFormSubmit: SubmitHandler<IinputData> = (data) => {
+  const handleFormSubmit: SubmitHandler<IformData> = (data) => {
     console.log(data);
   };
 
@@ -171,6 +172,17 @@ const page = () => {
             <p className="text-red-500 text-sm">{errors?.password?.message}</p>
           )}
         </div>
+
+        {/* for login */}
+        <p className="text-sm font-medium mb-2">
+          Already have an account?{" "}
+          <Link
+            href={"/login"}
+            className="text-primaryColor font-semibold hover:underline"
+          >
+            Login
+          </Link>
+        </p>
 
         {/* for submit button */}
         <button className="w-full bg-primaryColor text-white font-bold py-2 rounded-md mt-2">
