@@ -153,7 +153,6 @@ const Signup = () => {
                 value: 8,
                 message: "Password should contain atleast 8 character",
               },
-
               pattern: {
                 value: /^(\+91[-\s]?)?[0]?(91)?[789]\d{9}$/,
                 message: "Please choose a strong password",
