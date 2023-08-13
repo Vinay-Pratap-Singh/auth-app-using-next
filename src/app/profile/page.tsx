@@ -4,6 +4,8 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import profileImage from "@/assets/profile.jpg";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState({
@@ -13,6 +15,23 @@ const Profile = () => {
     isVerified: false,
     isAdmin: false,
   });
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false);
+  const router = useRouter();
+
+  // function to handle the logout
+  const handleLogout = async () => {
+    setIsLogoutLoading(true);
+    try {
+      const res = await axios.get("/api/user/logout");
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+        router.push("/login");
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+    setIsLogoutLoading(false);
+  };
 
   // fetching the user details
   useEffect(() => {
@@ -24,6 +43,9 @@ const Profile = () => {
 
   return (
     <div className="h-screen flex items-center justify-center gap-20">
+      {/* adding the toaster for toast message */}
+      <Toaster />
+
       {/* adding the image */}
       <Image className="w-[450px]" src={profileImage} alt="profile" />
 
@@ -46,8 +68,14 @@ const Profile = () => {
           <p>Role</p>
           <p>{userDetails.isAdmin ? "Admin" : "User"}</p>
 
-          {/* button to delete account */}
-          <button className="font-bold text-white bg-red-500 hover:bg-red-600 py-2 col-span-2 rounded-md">
+          {/* buttons for logout and delete account */}
+          <button
+            onClick={handleLogout}
+            className="font-bold text-white bg-primaryColor py-2 rounded-md"
+          >
+            {isLogoutLoading ? "Logging out ..." : "Logout"}
+          </button>
+          <button className="font-bold text-white bg-red-500 py-2  rounded-md">
             Delete Account
           </button>
         </div>
