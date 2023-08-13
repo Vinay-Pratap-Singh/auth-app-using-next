@@ -16,6 +16,7 @@ const Profile = () => {
     isAdmin: false,
   });
   const [isLogoutLoading, setIsLogoutLoading] = useState(false);
+  const [isDeleteAccountLoading, setIsDeleteAccountLoading] = useState(false);
   const router = useRouter();
 
   // function to handle the logout
@@ -28,9 +29,24 @@ const Profile = () => {
         router.push("/login");
       }
     } catch (error: any) {
-      toast.error(error?.message);
+      toast.error(error?.response?.data?.message);
     }
     setIsLogoutLoading(false);
+  };
+
+  // function to handle the account delete
+  const handleAccountDelete = async () => {
+    setIsDeleteAccountLoading(true);
+    try {
+      const res = await axios.delete("/api/user/delete");
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+        router.push("/login");
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    }
+    setIsDeleteAccountLoading(false);
   };
 
   // fetching the user details
@@ -58,25 +74,30 @@ const Profile = () => {
         {/* creating the user details grid */}
         <div className="grid grid-cols-2 gap-2 w-80 font-medium text-sm">
           <p>Full Name</p>
-          <p>{userDetails.fullName}</p>
+          <p>{userDetails?.fullName}</p>
           <p>Email</p>
-          <p>{userDetails.email}</p>
+          <p>{userDetails?.email}</p>
           <p>Phone Number</p>
-          <p>{userDetails.phoneNumber}</p>
+          <p>{userDetails?.phoneNumber}</p>
           <p>Verification</p>
-          <p>{userDetails.isVerified ? "Complete" : "Incomplete"}</p>
+          <p>{userDetails?.isVerified ? "Complete" : "Incomplete"}</p>
           <p>Role</p>
-          <p>{userDetails.isAdmin ? "Admin" : "User"}</p>
+          <p>{userDetails?.isAdmin ? "Admin" : "User"}</p>
 
           {/* buttons for logout and delete account */}
           <button
+            disabled={isLogoutLoading}
             onClick={handleLogout}
             className="font-bold text-white bg-primaryColor py-2 rounded-md"
           >
             {isLogoutLoading ? "Logging out ..." : "Logout"}
           </button>
-          <button className="font-bold text-white bg-red-500 py-2  rounded-md">
-            Delete Account
+          <button
+            disabled={isDeleteAccountLoading}
+            onClick={handleAccountDelete}
+            className="font-bold text-white bg-red-500 py-2  rounded-md"
+          >
+            {isDeleteAccountLoading ? "Deleting ..." : "Delete Account"}
           </button>
         </div>
       </div>

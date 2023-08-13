@@ -37,13 +37,13 @@ export async function POST(request: NextRequest) {
 
         return response;
       } else {
-        NextResponse.json({
+        return NextResponse.json({
           success: false,
           message: "Invalid credentials",
         });
       }
     } else {
-      NextResponse.json({
+      return NextResponse.json({
         success: false,
         message: "Invalid credentials",
       });
