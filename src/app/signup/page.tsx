@@ -4,6 +4,9 @@ import Image from "next/image";
 import signupImage from "@/assets/signup.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type IformData = {
   fullName: string;
@@ -13,22 +16,35 @@ type IformData = {
 };
 
 const Signup = () => {
+  const router = useRouter();
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
     register,
-    reset,
-    setValue,
-    watch,
   } = useForm<IformData>();
 
   // function handle the form submit
-  const handleFormSubmit: SubmitHandler<IformData> = (data) => {
-    console.log(data);
+  const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
+    try {
+      const res = await axios.post("/api/user/signup", data);
+      console.log(res.data);
+
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+        router.push("/login");
+      } else {
+        toast.error(res?.data?.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.message);
+    }
   };
 
   return (
     <div className="h-screen flex items-center justify-center gap-20">
+      {/* adding the toaster for toast message */}
+      <Toaster />
+
       {/* adding the image */}
       <Image src={signupImage} alt="signup" />
 
@@ -118,7 +134,7 @@ const Signup = () => {
                 message: "Please enter your phone number",
               },
               pattern: {
-                value: /^(\+91[-\s]?)?[0]?(91)?[789]\d{9}$/,
+                value: /^(?:(?:\+|0{0,2})91(\s*[-]\s*)?|[0]?)?[789]\d{9}$/,
                 message: "Please enter a valid phone number",
               },
             })}
@@ -154,7 +170,8 @@ const Signup = () => {
                 message: "Password should contain atleast 8 character",
               },
               pattern: {
-                value: /^(\+91[-\s]?)?[0]?(91)?[789]\d{9}$/,
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                 message: "Please choose a strong password",
               },
             })}
@@ -176,8 +193,11 @@ const Signup = () => {
         </p>
 
         {/* for submit button */}
-        <button className="w-full bg-primaryColor text-white font-bold py-2 rounded-md mt-2">
-          Create Account
+        <button
+          disabled={isSubmitting}
+          className="w-full bg-primaryColor text-white font-bold py-2 rounded-md mt-2"
+        >
+          {isSubmitting ? "Creating the account ..." : "Create Account"}
         </button>
       </form>
     </div>

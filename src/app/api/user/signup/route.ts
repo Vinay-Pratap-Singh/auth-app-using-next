@@ -38,7 +38,9 @@ export async function POST(request: NextRequest) {
     }
 
     // checking for valid phone number
-    if (!phoneNumber.match(/^(\+91[-\s]?)?[0]?(91)?[789]\d{9}$/)) {
+    if (
+      !phoneNumber.match(/^(?:(?:\+|0{0,2})91(\s*[-]\s*)?|[0]?)?[789]\d{9}$/)
+    ) {
       return NextResponse.json({
         success: false,
         message: "Please provide a valid phone number",
@@ -46,7 +48,11 @@ export async function POST(request: NextRequest) {
     }
 
     // checking for valid password
-    if (!password.match(/^(\+91[-\s]?)?[0]?(91)?[789]\d{9}$/)) {
+    if (
+      !password.match(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+      )
+    ) {
       return NextResponse.json({
         success: false,
         message: "Please provide a valid phone number",
@@ -58,18 +64,23 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcryptjs.hash(password, salt);
 
     //   creating the user account
-    const newUser = await new User({
-      fullName,
-      email,
-      phoneNumber,
-      password: hashedPassword,
-    }).save();
+    try {
+      await new User({
+        fullName,
+        email,
+        phoneNumber,
+        password: hashedPassword,
+      }).save();
+    } catch (error: any) {
+      NextResponse.json({
+        success: false,
+        message: error?.message,
+      });
+    }
 
-    console.log(newUser);
     return NextResponse.json({
       success: true,
       message: "Account created successfully",
-      user: newUser,
     });
   } catch (error: any) {
     return NextResponse.json({

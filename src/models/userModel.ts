@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
     unique: true,
     pattern: [
-      /^(\+91[-\s]?)?[0]?(91)?[789]\d{9}$/,
+      /^(?:(?:\+|0{0,2})91(\s*[-]\s*)?|[0]?)?[789]\d{9}$/,
       "Please provide a valid phone number",
     ],
   },
@@ -39,9 +39,9 @@ const userSchema = new mongoose.Schema({
     type: "Boolean",
     default: false,
   },
-  role: {
-    type: [String],
-    default: ["user"],
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
   forgetPasswordToken: String,
   forgetPasswordTokenExpiry: Date,
