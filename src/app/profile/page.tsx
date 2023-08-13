@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import profileImage from "@/assets/profile.jpg";
+import axios from "axios";
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState({
@@ -12,6 +13,14 @@ const Profile = () => {
     isVerified: false,
     isAdmin: false,
   });
+
+  // fetching the user details
+  useEffect(() => {
+    (async () => {
+      const res = await axios.get("/api/user/me");
+      setUserDetails(res.data?.user);
+    })();
+  }, []);
 
   return (
     <div className="h-screen flex items-center justify-center gap-20">
