@@ -4,6 +4,9 @@ import Image from "next/image";
 import loginImage from "@/assets/login.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 type IformData = {
   email: string;
@@ -11,22 +14,33 @@ type IformData = {
 };
 
 const Login = () => {
+  const router = useRouter();
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
     register,
-    reset,
-    setValue,
-    watch,
   } = useForm<IformData>();
 
   // function handle the form submit
-  const handleFormSubmit: SubmitHandler<IformData> = (data) => {
-    console.log(data);
+  const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
+    try {
+      const res = await axios.post("/api/user/login", data);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+        router.push("/");
+      } else {
+        toast.error(res?.data?.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.message);
+    }
   };
 
   return (
     <div className="h-screen flex items-center justify-center gap-20">
+      {/* adding the toaster for toast message */}
+      <Toaster />
+
       {/* adding the image */}
       <Image src={loginImage} alt="signup" />
 
@@ -105,8 +119,12 @@ const Login = () => {
         </p>
 
         {/* for submit button */}
-        <button className="w-full bg-primaryColor text-white font-bold py-2 rounded-md mt-2">
-          Login
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full bg-primaryColor text-white font-bold py-2 rounded-md mt-2"
+        >
+          {isSubmitting ? "Logging to the account ..." : "Login"}
         </button>
       </form>
     </div>

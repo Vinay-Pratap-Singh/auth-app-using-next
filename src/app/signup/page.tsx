@@ -27,8 +27,6 @@ const Signup = () => {
   const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
     try {
       const res = await axios.post("/api/user/signup", data);
-      console.log(res.data);
-
       if (res?.data?.success) {
         toast.success(res?.data?.message);
         router.push("/login");
@@ -194,6 +192,7 @@ const Signup = () => {
 
         {/* for submit button */}
         <button
+          type="submit"
           disabled={isSubmitting}
           className="w-full bg-primaryColor text-white font-bold py-2 rounded-md mt-2"
         >

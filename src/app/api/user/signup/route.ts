@@ -64,19 +64,12 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcryptjs.hash(password, salt);
 
     //   creating the user account
-    try {
-      await new User({
-        fullName,
-        email,
-        phoneNumber,
-        password: hashedPassword,
-      }).save();
-    } catch (error: any) {
-      NextResponse.json({
-        success: false,
-        message: error?.message,
-      });
-    }
+    await new User({
+      fullName,
+      email,
+      phoneNumber,
+      password: hashedPassword,
+    }).save();
 
     return NextResponse.json({
       success: true,
