@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     ) {
       return NextResponse.json({
         success: false,
-        message: "Please provide a valid phone number",
+        message: "Please provide a valid password",
       });
     }
 
