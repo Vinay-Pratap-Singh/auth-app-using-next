@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
       token,
       process.env.TOKEN_SECRET!
     );
+    console.log(token, decodedToken);
     const { id } = decodedToken;
     const user = await User.findOne({ _id: id }).select("-password");
     return NextResponse.json({
