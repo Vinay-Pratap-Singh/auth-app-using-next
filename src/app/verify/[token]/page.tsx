@@ -49,19 +49,19 @@ const VerifyAccount = ({ params }: any) => {
 
       {/* displaying the message to the user */}
       {!isError ? (
-        <h1 className="font-bold text-xl">
+        <h1 className="font-bold text-xl mx-5 lg:mx-0 text-center">
           {!isVerified
             ? "Wait account verification is in progress ..."
             : "Account verification successfull"}
         </h1>
       ) : (
-        <h1 className="font-bold text-xl text-red-500">
+        <h1 className="font-bold text-xl text-red-500 mx-5 lg:mx-0 text-center">
           User verification failed ...
         </h1>
       )}
 
       {/* adding the image */}
-      <Image src={verify} alt="verify account" />
+      <Image src={verify} alt="verify account" className="px-5 lg:px-0" />
     </div>
   );
 };

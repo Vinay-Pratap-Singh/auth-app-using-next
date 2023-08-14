@@ -4,7 +4,6 @@ import Image from "next/image";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import forgetImage from "@/assets/forget.svg";
-import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import Link from "next/link";
@@ -14,7 +13,6 @@ type IformData = {
 };
 
 const Forget = () => {
-  const router = useRouter();
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -37,18 +35,18 @@ const Forget = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center gap-20">
+    <div className="lg:h-screen flex flex-col lg:flex-row items-center justify-center gap-5 lg:gap-20 py-5 lg:py-0">
       {/* adding the toaster for toast message */}
       <Toaster />
 
       {/* adding the image */}
-      <Image src={forgetImage} alt="signup" />
+      <Image src={forgetImage} className="px-5 lg:px-0" alt="signup" />
 
       {/* adding the login form */}
       <form
         action=""
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="w-96 flex flex-col shadow-md rounded-md p-5"
+        className="w-[90%] lg:w-96 flex flex-col shadow-md rounded-md p-5"
       >
         <h1 className="text-center font-semibold text-xl mb-5">
           Forget password

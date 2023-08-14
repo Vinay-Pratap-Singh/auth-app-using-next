@@ -76,12 +76,16 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="h-screen flex items-center justify-center gap-20">
+    <div className="lg:h-screen flex flex-col lg:flex-row items-center justify-center gap-5 lg:gap-20 py-5 lg:py-0">
       {/* adding the toaster for toast message */}
       <Toaster />
 
       {/* adding the image */}
-      <Image className="w-[450px]" src={profileImage} alt="profile" />
+      <Image
+        className="w-80 lg:mt-0 lg:w-[450px]"
+        src={profileImage}
+        alt="profile"
+      />
 
       {/* creating the profile card */}
       <div className="shadow-md rounded-md p-5">

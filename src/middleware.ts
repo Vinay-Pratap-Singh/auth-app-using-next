@@ -8,7 +8,9 @@ export async function middleware(request: NextRequest) {
     currentPath === "/" ||
     currentPath === "/login" ||
     currentPath === "/signup" ||
-    currentPath.startsWith("/verify");
+    currentPath.startsWith("/verify") ||
+    currentPath.startsWith("/reset") ||
+    currentPath === "/forget";
   if (token && isPublicPath) {
     return NextResponse.redirect(new URL("/profile", request.url));
   }
@@ -19,5 +21,13 @@ export async function middleware(request: NextRequest) {
 
 // matching the routes
 export const config = {
-  matcher: ["/", "/login", "/signup", "/profile", "/verify:token*"],
+  matcher: [
+    "/",
+    "/login",
+    "/signup",
+    "/profile",
+    "/verify:token*",
+    "/reset/:token*",
+    "/forget",
+  ],
 };

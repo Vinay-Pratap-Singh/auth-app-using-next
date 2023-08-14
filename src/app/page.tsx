@@ -3,12 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const page = () => {
-  const isLoggedIn = false;
-
   return (
-    <main className="max-h-screen py-10 px-20 flex items-center justify-center gap-10">
+    <main className="lg:h-screen flex flex-col lg:flex-row items-center justify-center gap-5 lg:gap-20 py-5 lg:py-0 px-5">
       {/* adding the homepage image */}
-      <Image src={homepageImage} alt="homepage" />
+      <Image src={homepageImage} className="px-5 lg:px-0" alt="homepage" />
 
       {/* adding the homepage details section */}
       <section className="space-y-5 font-medium">
@@ -33,19 +31,18 @@ const page = () => {
           <ul className="list-disc ml-4">
             <li>Robust Full-Stack Authentication</li>
             <li>Effortless Login and Signup</li>
-            <li>Role-Based Access Control</li>
+            <li>Protected routes</li>
             <li>Powered by Next.js</li>
           </ul>
         </div>
-        {!isLoggedIn && (
-          <div>
-            <Link href={"/login"}>
-              <button className="bg-primaryColor text-white font-semibold px-5 py-2 rounded-md shadow-sm">
-                Login
-              </button>{" "}
-            </Link>
-          </div>
-        )}
+
+        <div className="w-full flex items-center justify-center lg:block">
+          <Link href={"/login"}>
+            <button className=" bg-primaryColor text-white font-semibold px-5 py-2 rounded-md shadow-sm">
+              Login
+            </button>{" "}
+          </Link>
+        </div>
       </section>
     </main>
   );
