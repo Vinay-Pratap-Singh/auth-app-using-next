@@ -8,10 +8,13 @@ connectDB();
 
 // function to return the user data
 export async function GET(request: NextRequest) {
-  const token = request.cookies.get("token")?.value || "";
-  const decodedToken: any = await jwt.verify(token, process.env.TOKEN_SECRET!);
-  const { id } = decodedToken;
   try {
+    const token = request.cookies.get("token")?.value || "";
+    const decodedToken: any = await jwt.verify(
+      token,
+      process.env.TOKEN_SECRET!
+    );
+    const { id } = decodedToken;
     const user = await User.findOne({ _id: id }).select("-password");
     return NextResponse.json({
       success: true,

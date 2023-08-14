@@ -40,7 +40,7 @@ const VerifyAccount = ({ params }: any) => {
       setIsError(true);
       toast.error(error?.response?.data?.message);
     }
-  }, []);
+  }, [params.token, router]);
 
   return (
     <div className="h-screen flex flex-col items-center justify-center">
