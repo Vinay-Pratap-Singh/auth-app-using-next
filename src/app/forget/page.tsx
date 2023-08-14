@@ -1,19 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import loginImage from "@/assets/login.svg";
-import { useForm, SubmitHandler } from "react-hook-form";
-import Link from "next/link";
+import React from "react";
 import toast, { Toaster } from "react-hot-toast";
+import forgetImage from "@/assets/forget.svg";
 import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
+import Link from "next/link";
 
 type IformData = {
   email: string;
-  password: string;
 };
 
-const Login = () => {
+const Forget = () => {
   const router = useRouter();
   const {
     formState: { errors, isSubmitting },
@@ -24,12 +24,12 @@ const Login = () => {
   // function handle the form submit
   const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
     try {
-      const res = await axios.post("/api/user/login", data);
+      const res = await axios.post("/api/user/mail", {
+        email: data?.email,
+        emailType: "RESET",
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message);
-        router.push("/");
-      } else {
-        toast.error(res?.data?.message);
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
@@ -42,7 +42,7 @@ const Login = () => {
       <Toaster />
 
       {/* adding the image */}
-      <Image src={loginImage} alt="signup" />
+      <Image src={forgetImage} alt="signup" />
 
       {/* adding the login form */}
       <form
@@ -51,7 +51,7 @@ const Login = () => {
         className="w-96 flex flex-col shadow-md rounded-md p-5"
       >
         <h1 className="text-center font-semibold text-xl mb-5">
-          Login to your account
+          Forget password
         </h1>
 
         {/* for email */}
@@ -81,49 +81,16 @@ const Login = () => {
           )}
         </div>
 
-        {/* for password */}
-        <div className="flex flex-col gap-1 mb-2">
-          <label htmlFor="password" className="text-sm font-semibold">
-            Your Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Test@12345"
-            className={`px-2 py-1 border-2 w-full font-normal rounded-md ${
-              errors.password
-                ? "focus:outline-red-500"
-                : "focus:outline-primaryColor"
-            }`}
-            {...register("password", {
-              required: {
-                value: true,
-                message: "Please choose a password",
-              },
-            })}
-          />
-          {errors.password && (
-            <p className="text-red-500 text-sm">{errors?.password?.message}</p>
-          )}
-        </div>
-
-        {/* for create account */}
+        {/* for login */}
         <p className="text-sm font-medium mb-2">
-          Don&#39;t have an account?{" "}
+          Already have an account?{" "}
           <Link
-            href={"/signup"}
+            href={"/login"}
             className="text-primaryColor font-semibold hover:underline"
           >
-            Create account
+            Login
           </Link>
         </p>
-
-        {/* for forget password */}
-        <Link href={"/forget"}>
-          <p className="text-primaryColor font-semibold hover:underline mb-2 text-sm text-center">
-            Forget Password ?
-          </p>
-        </Link>
 
         {/* for submit button */}
         <button
@@ -131,11 +98,11 @@ const Login = () => {
           disabled={isSubmitting}
           className="w-full bg-primaryColor text-white font-bold py-2 rounded-md mt-2"
         >
-          {isSubmitting ? "Logging to the account ..." : "Login"}
+          {isSubmitting ? "Sending reset mail ..." : "Get reset mail"}
         </button>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Forget;
