@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     //   checking the user based on the token
     const user = await User.findOne({
-      verifyToken: token,
+      verifyToken: decodeURIComponent(token),
       verifyTokenExpiry: { $gt: Date.now() },
     });
 

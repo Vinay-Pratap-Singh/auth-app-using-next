@@ -12,7 +12,7 @@ type Iprop = {
 export const sendEmail = async ({ email, emailType, userID }: Iprop) => {
   try {
     // creating the hashed token
-    const hashedToken = bcryptjs.hash(userID.toString(), 10);
+    const hashedToken = await bcryptjs.hash(userID.toString(), 10);
 
     // setting the data as per email type
     if (emailType === "VERIFY") {
@@ -24,7 +24,7 @@ export const sendEmail = async ({ email, emailType, userID }: Iprop) => {
           verifyTokenExpiry: Date.now() + 600000,
         }
       );
-    } else if (emailType === "FORGET") {
+    } else if (emailType === "RESET") {
       await User.findOneAndUpdate(
         { _id: userID },
         {
@@ -48,7 +48,7 @@ export const sendEmail = async ({ email, emailType, userID }: Iprop) => {
     //   creating the mail options
     const mailOptions = {
       from: "technicalharvi@gmail.com",
-      to: "email",
+      to: email,
       subject:
         emailType === "VERIFY" ? "Verify your account" : "Reset your password",
       html:

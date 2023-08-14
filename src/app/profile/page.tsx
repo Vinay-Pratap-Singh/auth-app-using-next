@@ -17,6 +17,7 @@ const Profile = () => {
   });
   const [isLogoutLoading, setIsLogoutLoading] = useState(false);
   const [isDeleteAccountLoading, setIsDeleteAccountLoading] = useState(false);
+  const [isVerifyLoading, setIsVerifyLoading] = useState(false);
   const router = useRouter();
 
   // function to handle the logout
@@ -47,6 +48,23 @@ const Profile = () => {
       toast.error(error?.response?.data?.message);
     }
     setIsDeleteAccountLoading(false);
+  };
+
+  // function to handle verify button
+  const handleVerify = async () => {
+    setIsVerifyLoading(true);
+    try {
+      const res = await axios.post("/api/user/mail", {
+        email: userDetails?.email,
+        emailType: "VERIFY",
+      });
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    }
+    setIsVerifyLoading(false);
   };
 
   // fetching the user details
@@ -84,7 +102,18 @@ const Profile = () => {
           <p>Role</p>
           <p>{userDetails?.isAdmin ? "Admin" : "User"}</p>
 
-          {/* buttons for logout and delete account */}
+          {/* verify account button */}
+          {!userDetails?.isVerified && (
+            <button
+              disabled={isVerifyLoading}
+              onClick={handleVerify}
+              className="font-bold bg-gray-200 py-2 rounded-md"
+            >
+              {isVerifyLoading ? "Sending mail ..." : "Verify Account"}
+            </button>
+          )}
+
+          {/* logout button */}
           <button
             disabled={isLogoutLoading}
             onClick={handleLogout}
@@ -92,10 +121,14 @@ const Profile = () => {
           >
             {isLogoutLoading ? "Logging out ..." : "Logout"}
           </button>
+
+          {/* delete account button */}
           <button
             disabled={isDeleteAccountLoading}
             onClick={handleAccountDelete}
-            className="font-bold text-white bg-red-500 py-2  rounded-md"
+            className={`font-bold text-white bg-red-500 py-2 rounded-md ${
+              !userDetails?.isVerified && "col-span-2"
+            }`}
           >
             {isDeleteAccountLoading ? "Deleting ..." : "Delete Account"}
           </button>
