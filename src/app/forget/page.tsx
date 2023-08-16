@@ -22,10 +22,14 @@ const Forget = () => {
   // function handle the form submit
   const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
     try {
-      const res = await axios.post("/api/user/mail", {
-        email: data?.email,
-        emailType: "RESET",
-      });
+      const res = await axios.post(
+        "/api/user/mail",
+        {
+          email: data?.email,
+          emailType: "RESET",
+        },
+        { withCredentials: true }
+      );
       if (res?.data?.success) {
         toast.success(res?.data?.message);
       }

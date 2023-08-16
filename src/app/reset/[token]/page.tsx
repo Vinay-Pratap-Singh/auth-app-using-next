@@ -26,11 +26,15 @@ const ResetPassword = ({ params }: any) => {
   // function handle the form submit
   const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
     try {
-      const res = await axios.post("/api/user/forget", {
-        token: decodeURIComponent(params.token),
-        password: data.password,
-        confirmPassword: data.confirmPassword,
-      });
+      const res = await axios.post(
+        "/api/user/forget",
+        {
+          token: decodeURIComponent(params.token),
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+        },
+        { withCredentials: true }
+      );
       if (res?.data?.success) {
         toast.success(res?.data?.message);
         router.push("/login");

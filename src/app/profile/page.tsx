@@ -24,7 +24,9 @@ const Profile = () => {
   const handleLogout = async () => {
     setIsLogoutLoading(true);
     try {
-      const res = await axios.get("/api/user/logout");
+      const res = await axios.get("/api/user/logout", {
+        withCredentials: true,
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message);
         router.push("/login");
@@ -39,7 +41,9 @@ const Profile = () => {
   const handleAccountDelete = async () => {
     setIsDeleteAccountLoading(true);
     try {
-      const res = await axios.delete("/api/user/delete");
+      const res = await axios.delete("/api/user/delete", {
+        withCredentials: true,
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message);
         router.push("/login");
@@ -54,10 +58,14 @@ const Profile = () => {
   const handleVerify = async () => {
     setIsVerifyLoading(true);
     try {
-      const res = await axios.post("/api/user/mail", {
-        email: userDetails?.email,
-        emailType: "VERIFY",
-      });
+      const res = await axios.post(
+        "/api/user/mail",
+        {
+          email: userDetails?.email,
+          emailType: "VERIFY",
+        },
+        { withCredentials: true }
+      );
       if (res?.data?.success) {
         toast.success(res?.data?.message);
       }
@@ -70,7 +78,7 @@ const Profile = () => {
   // fetching the user details
   useEffect(() => {
     (async () => {
-      const res = await axios.get("/api/user/me");
+      const res = await axios.get("/api/user/me", { withCredentials: true });
       setUserDetails(res.data?.user);
     })();
   }, []);

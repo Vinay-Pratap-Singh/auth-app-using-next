@@ -26,7 +26,9 @@ const Signup = () => {
   // function handle the form submit
   const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
     try {
-      const res = await axios.post("/api/user/signup", data);
+      const res = await axios.post("/api/user/signup", data, {
+        withCredentials: true,
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message);
         router.push("/login");

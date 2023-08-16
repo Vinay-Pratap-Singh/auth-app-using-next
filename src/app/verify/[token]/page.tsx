@@ -23,9 +23,13 @@ const VerifyAccount = ({ params }: any) => {
 
     try {
       (async () => {
-        const res = await axios.post("/api/user/verify", {
-          token: params.token,
-        });
+        const res = await axios.post(
+          "/api/user/verify",
+          {
+            token: params.token,
+          },
+          { withCredentials: true }
+        );
 
         if (res?.data?.success) {
           toast.success(res?.data?.message);
