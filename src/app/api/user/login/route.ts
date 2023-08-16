@@ -33,7 +33,11 @@ export async function POST(request: NextRequest) {
           user,
         });
         // adding the token to https only cookie
-        response.cookies.set("token", token, { httpOnly: true });
+        response.cookies.set("token", token, {
+          httpOnly: true,
+          secure: true,
+          maxAge: 1000 * 60 * 60 * 24,
+        });
 
         return response;
       } else {
