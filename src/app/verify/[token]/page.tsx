@@ -6,7 +6,7 @@ import verify from "@/assets/verify.svg";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axiosInstance from "@/helper/axiosInstance";
 
 const VerifyAccount = ({ params }: any) => {
   const [isVerified, setIsVerified] = useState(false);
@@ -23,13 +23,9 @@ const VerifyAccount = ({ params }: any) => {
 
     try {
       (async () => {
-        const res = await axios.post(
-          "/api/user/verify",
-          {
-            token: params.token,
-          },
-          { withCredentials: true }
-        );
+        const res = await axiosInstance.post("/api/user/verify", {
+          token: params.token,
+        });
 
         if (res?.data?.success) {
           toast.success(res?.data?.message);

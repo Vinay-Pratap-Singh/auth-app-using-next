@@ -27,11 +27,15 @@ export async function POST(request: NextRequest) {
           expiresIn: "1d",
         });
 
-        const response = NextResponse.json({
-          success: true,
-          message: "Login successfully",
-          user,
-        });
+        const response = NextResponse.json(
+          {
+            success: true,
+            message: "Login successfully",
+            token,
+            user,
+          },
+          { status: 200 }
+        );
         // adding the token to https only cookie
         response.cookies.set("token", token, {
           httpOnly: true,
@@ -41,21 +45,30 @@ export async function POST(request: NextRequest) {
 
         return response;
       } else {
-        return NextResponse.json({
-          success: false,
-          message: "Invalid credentials",
-        });
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Invalid credentials",
+          },
+          { status: 400 }
+        );
       }
     } else {
-      return NextResponse.json({
-        success: false,
-        message: "Invalid credentials",
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid credentials",
+        },
+        { status: 400 }
+      );
     }
   } catch (error: any) {
-    return NextResponse.json({
-      success: false,
-      message: error?.message,
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        message: error?.message,
+      },
+      { status: 400 }
+    );
   }
 }

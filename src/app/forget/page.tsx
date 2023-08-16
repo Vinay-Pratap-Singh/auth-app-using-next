@@ -5,8 +5,8 @@ import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import forgetImage from "@/assets/forget.svg";
 import { SubmitHandler, useForm } from "react-hook-form";
-import axios from "axios";
 import Link from "next/link";
+import axiosInstance from "@/helper/axiosInstance";
 
 type IformData = {
   email: string;
@@ -22,14 +22,10 @@ const Forget = () => {
   // function handle the form submit
   const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
     try {
-      const res = await axios.post(
-        "/api/user/mail",
-        {
-          email: data?.email,
-          emailType: "RESET",
-        },
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.post("/api/user/mail", {
+        email: data?.email,
+        emailType: "RESET",
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message);
       }

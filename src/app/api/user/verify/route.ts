@@ -19,10 +19,13 @@ export async function POST(request: NextRequest) {
 
     //   user not found
     if (!user) {
-      return NextResponse.json({
-        success: false,
-        message: "Invalid token",
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid token",
+        },
+        { status: 403 }
+      );
     }
 
     //   updating the user fields if it exist
@@ -31,15 +34,21 @@ export async function POST(request: NextRequest) {
     user.verifyTokenExpiry = undefined;
     await user.save();
 
-    return NextResponse.json({
-      success: true,
-      message: "User verification successfull",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "User verification successfull",
+      },
+      { status: 200 }
+    );
   } catch (error: any) {
-    return NextResponse.json({
-      success: false,
-      message: "Failed to verify the user",
-      error: error?.message,
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to verify the user",
+        error: error?.message,
+      },
+      { status: 400 }
+    );
   }
 }

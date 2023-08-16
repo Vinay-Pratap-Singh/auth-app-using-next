@@ -36,10 +36,13 @@ export async function POST(request: NextRequest) {
 
     //   user not found
     if (!user) {
-      return NextResponse.json({
-        success: false,
-        message: "Invalid token",
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid token",
+        },
+        { status: 401 }
+      );
     }
 
     //   encypting the password
@@ -50,15 +53,21 @@ export async function POST(request: NextRequest) {
     user.password = hashedPassword;
     await user.save();
 
-    return NextResponse.json({
-      success: true,
-      message: "Password changed successfully",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Password changed successfully",
+      },
+      { status: 200 }
+    );
   } catch (error: any) {
-    return NextResponse.json({
-      success: false,
-      message: "Failed to changed the password",
-      error: error?.message,
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to changed the password",
+        error: error?.message,
+      },
+      { status: 404 }
+    );
   }
 }

@@ -3,12 +3,11 @@
 import Image from "next/image";
 import React from "react";
 import resetImage from "@/assets/reset.svg";
-import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
+import axiosInstance from "@/helper/axiosInstance";
 
 type IformData = {
   password: string;
@@ -26,15 +25,11 @@ const ResetPassword = ({ params }: any) => {
   // function handle the form submit
   const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
     try {
-      const res = await axios.post(
-        "/api/user/forget",
-        {
-          token: decodeURIComponent(params.token),
-          password: data.password,
-          confirmPassword: data.confirmPassword,
-        },
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.post("/api/user/forget", {
+        token: decodeURIComponent(params.token),
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message);
         router.push("/login");

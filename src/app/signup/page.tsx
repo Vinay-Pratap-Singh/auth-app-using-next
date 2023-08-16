@@ -4,9 +4,9 @@ import Image from "next/image";
 import signupImage from "@/assets/signup.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
-import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import axiosInstance from "@/helper/axiosInstance";
 
 type IformData = {
   fullName: string;
@@ -26,9 +26,7 @@ const Signup = () => {
   // function handle the form submit
   const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
     try {
-      const res = await axios.post("/api/user/signup", data, {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.post("/api/user/signup", data);
       if (res?.data?.success) {
         toast.success(res?.data?.message);
         router.push("/login");

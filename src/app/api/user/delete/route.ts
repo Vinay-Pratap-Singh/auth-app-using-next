@@ -28,14 +28,20 @@ export async function DELETE(request: NextRequest) {
       });
       return response;
     }
-    return NextResponse.json({
-      success: false,
-      message: "Failed to delete your account",
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to delete your account",
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      message: "Failed to delete your account",
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to delete your account",
+      },
+      { status: 400 }
+    );
   }
 }

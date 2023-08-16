@@ -3,9 +3,9 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import profileImage from "@/assets/profile.jpg";
-import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import axiosInstance from "@/helper/axiosInstance";
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState({
@@ -24,11 +24,10 @@ const Profile = () => {
   const handleLogout = async () => {
     setIsLogoutLoading(true);
     try {
-      const res = await axios.get("/api/user/logout", {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.get("/api/user/logout");
       if (res?.data?.success) {
         toast.success(res?.data?.message);
+        localStorage.clear();
         router.push("/login");
       }
     } catch (error: any) {
@@ -41,9 +40,7 @@ const Profile = () => {
   const handleAccountDelete = async () => {
     setIsDeleteAccountLoading(true);
     try {
-      const res = await axios.delete("/api/user/delete", {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.delete("/api/user/delete");
       if (res?.data?.success) {
         toast.success(res?.data?.message);
         router.push("/login");
@@ -58,14 +55,10 @@ const Profile = () => {
   const handleVerify = async () => {
     setIsVerifyLoading(true);
     try {
-      const res = await axios.post(
-        "/api/user/mail",
-        {
-          email: userDetails?.email,
-          emailType: "VERIFY",
-        },
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.post("/api/user/mail", {
+        email: userDetails?.email,
+        emailType: "VERIFY",
+      });
       if (res?.data?.success) {
         toast.success(res?.data?.message);
       }
@@ -78,7 +71,7 @@ const Profile = () => {
   // fetching the user details
   useEffect(() => {
     (async () => {
-      const res = await axios.get("/api/user/me", { withCredentials: true });
+      const res = await axiosInstance.get("/api/user/me");
       setUserDetails(res.data?.user);
     })();
   }, []);

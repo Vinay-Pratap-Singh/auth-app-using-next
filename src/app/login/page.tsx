@@ -6,7 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axiosInstance from "@/helper/axiosInstance";
 
 type IformData = {
   email: string;
@@ -24,12 +24,11 @@ const Login = () => {
   // function handle the form submit
   const handleFormSubmit: SubmitHandler<IformData> = async (data) => {
     try {
-      const res = await axios.post("/api/user/login", data, {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.post("/api/user/login", data);
       if (res?.data?.success) {
+        localStorage.setItem("token", res?.data?.token);
         toast.success(res?.data?.message);
-        router.push("/");
+        router.push("/profile");
       } else {
         toast.error(res?.data?.message);
       }
