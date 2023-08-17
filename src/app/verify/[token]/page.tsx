@@ -24,7 +24,7 @@ const VerifyAccount = ({ params }: any) => {
     try {
       (async () => {
         const res = await axiosInstance.post("/api/user/verify", {
-          token: params.token,
+          token: decodeURIComponent(params.token),
         });
 
         if (res?.data?.success) {

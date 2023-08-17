@@ -13,6 +13,7 @@ export const sendEmail = async ({ email, emailType, userID }: Iprop) => {
   try {
     // creating the hashed token
     const hashedToken = await bcryptjs.hash(userID.toString(), 10);
+    const encodedToken = encodeURIComponent(hashedToken);
 
     // setting the data as per email type
     if (emailType === "VERIFY") {
@@ -53,8 +54,8 @@ export const sendEmail = async ({ email, emailType, userID }: Iprop) => {
         emailType === "VERIFY" ? "Verify your account" : "Reset your password",
       html:
         emailType === "VERIFY"
-          ? `<p>Click <a href="${process.env.DOMAIN}/verify/${hashedToken}">here<a/> to verify the account. <br>If not working, please visit the given link ${process.env.DOMAIN}/verify/${hashedToken}</p>`
-          : `<p>Click <a href="${process.env.DOMAIN}/reset/${hashedToken}">here<a/> to reset your account password. <br>If not working, please visit the given link: ${process.env.DOMAIN}/reset/${hashedToken}</p>`,
+          ? `<p>Click <a href="${process.env.DOMAIN}/verify/${encodedToken}">here<a/> to verify the account. <br>If not working, please visit the given link ${process.env.DOMAIN}/verify/${encodedToken}</p>`
+          : `<p>Click <a href="${process.env.DOMAIN}/reset/${encodedToken}">here<a/> to reset your account password. <br>If not working, please visit the given link: ${process.env.DOMAIN}/reset/${encodedToken}</p>`,
     };
 
     //   sending the mail
